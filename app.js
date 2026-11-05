@@ -16,7 +16,7 @@ const state = {
   tests: [],
   currentQuestions: [],
   selectedTestId: null,
-  completedTests: new Set(loadCompletedTests()),
+  completedTests: new Map(Object.entries(loadCompletedTests())),
 };
 
 async function fetchJson(url) {
@@ -32,14 +32,35 @@ async function fetchJson(url) {
 function loadCompletedTests() {
   try {
     const raw = localStorage.getItem(storageKey);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) {
+      return {};
+    }
+
+    const parsed = JSON.parse(raw);
+
+    if (Array.isArray(parsed)) {
+      return Object.fromEntries(parsed.map((testId) => [testId, { score: 24, total: 24 }]));
+    }
+
+    return Object.fromEntries(
+      Object.entries(parsed).map(([testId, value]) => {
+        const score = typeof value === 'object' && value !== null && Number.isFinite(Number(value.score))
+          ? Number(value.score)
+          : 0;
+        const total = typeof value === 'object' && value !== null && Number.isFinite(Number(value.total))
+          ? Number(value.total)
+          : 24;
+
+        return [testId, { score, total }];
+      })
+    );
   } catch {
-    return [];
+    return {};
   }
 }
 
 function saveCompletedTests() {
-  localStorage.setItem(storageKey, JSON.stringify([...state.completedTests]));
+  localStorage.setItem(storageKey, JSON.stringify(Object.fromEntries(state.completedTests.entries())));
 }
 
 function shuffle(items) {
@@ -133,25 +154,45 @@ function renderTestList() {
   }
 
   filteredTests.forEach((test) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'test-card';
+    const card = document.createElement('div');
+    card.className = 'test-card';
 
     const isCompleted = state.completedTests.has(test.id);
+    const completionData = state.completedTests.get(test.id);
+
     if (isCompleted) {
-      button.classList.add('completed');
+      card.classList.add('completed');
     }
 
-    button.innerHTML = `
+    const main = document.createElement('button');
+    main.type = 'button';
+    main.className = 'test-card-main-button';
+    main.innerHTML = `
       <span class="test-card-main">
         <strong>${test.label}</strong>
         <span class="test-card-meta">${test.questions.length} questions</span>
       </span>
-      <span class="test-badge ${isCompleted ? 'completed' : ''}">${isCompleted ? 'Completed' : 'Open'}</span>
+      <span class="test-badge ${isCompleted ? 'completed' : ''}">${isCompleted ? `Completed ${completionData.score}/${completionData.total}` : 'Open'}</span>
     `;
+    main.addEventListener('click', () => startTest(test.id));
 
-    button.addEventListener('click', () => startTest(test.id));
-    testList.appendChild(button);
+    card.appendChild(main);
+
+    if (isCompleted) {
+      const resetButton = document.createElement('button');
+      resetButton.type = 'button';
+      resetButton.className = 'reset-progress-btn';
+      resetButton.textContent = 'Reset';
+      resetButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        state.completedTests.delete(test.id);
+        saveCompletedTests();
+        renderTestList();
+      });
+      card.appendChild(resetButton);
+    }
+
+    testList.appendChild(card);
   });
 }
 
@@ -247,9 +288,9 @@ function compareAnswers(question, selected) {
   return selected === question.correctAnswer;
 }
 
-function markTestCompleted() {
+function markTestCompleted(correctCount, totalQuestions) {
   if (state.selectedTestId && state.selectedTestId !== 'random') {
-    state.completedTests.add(state.selectedTestId);
+    state.completedTests.set(state.selectedTestId, { score: correctCount, total: totalQuestions });
     saveCompletedTests();
     renderTestList();
   }
@@ -303,7 +344,8 @@ function renderResults() {
   const totalQuestions = state.currentQuestions.length;
   statusEl.textContent = `You scored ${correctCount} out of ${totalQuestions}.`;
   statusEl.className = 'status success';
-  markTestCompleted();
+  markTestCompleted(correctCount, totalQuestions);
+  return { correctCount, totalQuestions };
 }
 
 form.addEventListener('submit', (event) => {
