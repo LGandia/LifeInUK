@@ -83,6 +83,79 @@ h1 {
   gap: 12px;
 }
 
+.home-summary {
+  margin: 0 0 18px;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f9fbff;
+}
+
+.home-summary.pass {
+  border-color: rgba(31, 143, 95, 0.4);
+  background: rgba(31, 143, 95, 0.05);
+}
+
+.home-summary.fail {
+  border-color: rgba(201, 61, 61, 0.35);
+  background: rgba(201, 61, 61, 0.04);
+}
+
+.home-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.home-summary-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home-summary strong {
+  font-size: 1.05rem;
+}
+
+.home-summary .score-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.home-summary.pass .score-pill {
+  background: rgba(31, 143, 95, 0.12);
+  color: var(--success);
+}
+
+.home-summary.fail .score-pill {
+  background: rgba(201, 61, 61, 0.1);
+  color: var(--error);
+}
+
+.review-btn,
+.reset-progress-btn {
+  border: 1px solid rgba(31, 111, 235, 0.2);
+  border-radius: 8px;
+  background: #edf3ff;
+  color: var(--primary-dark);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reset-progress-btn {
+  border-color: rgba(201, 61, 61, 0.25);
+  background: #fff5f5;
+  color: var(--error);
+}
+
 .test-card {
   width: 100%;
   display: flex;
@@ -148,13 +221,9 @@ h1 {
   color: var(--success);
 }
 
-.reset-progress-btn {
-  border: 1px solid rgba(201, 61, 61, 0.25);
-  background: #fff5f5;
+.test-badge.failed {
+  background: rgba(201, 61, 61, 0.1);
   color: var(--error);
-  padding: 8px 12px;
-  font-size: 0.8rem;
-  font-weight: 700;
 }
 
 .status {
@@ -187,6 +256,12 @@ h1 {
 .question-card.incorrect {
   border-color: rgba(201, 61, 61, 0.45);
   background: rgba(201, 61, 61, 0.04);
+}
+
+.question-card.unanswered {
+  border-color: rgba(201, 61, 61, 0.7);
+  background: rgba(201, 61, 61, 0.06);
+  box-shadow: 0 0 0 2px rgba(201, 61, 61, 0.12);
 }
 
 .question-header {
