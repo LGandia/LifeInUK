@@ -173,6 +173,13 @@ h1 {
   background: rgba(31, 143, 95, 0.04);
 }
 
+.test-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
 .test-card-main-button {
   flex: 1;
   display: flex;

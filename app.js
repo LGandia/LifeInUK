@@ -175,13 +175,29 @@ function renderTestList() {
         <strong>${test.label}</strong>
         <span class="test-card-meta">${test.questions.length} questions</span>
       </span>
-      <span class="test-badge ${isCompleted ? (passed ? 'completed' : 'failed') : ''}">${isCompleted ? `Completed ${completionData.score}/${completionData.total}` : 'Open'}</span>
+      ${!isCompleted ? `<span class="test-badge ${passed ? 'completed' : 'failed'}">Open</span>` : ''}
     `;
     main.addEventListener('click', () => startTest(test.id));
 
     card.appendChild(main);
 
     if (isCompleted) {
+      const actions = document.createElement('div');
+      actions.className = 'test-card-actions';
+
+      const reviewButton = document.createElement('button');
+      reviewButton.type = 'button';
+      reviewButton.className = 'review-btn';
+      reviewButton.textContent = 'Review test';
+      reviewButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        startTest(test.id, { reviewMode: true });
+      });
+
+      const badge = document.createElement('span');
+      badge.className = `test-badge ${passed ? 'completed' : 'failed'}`;
+      badge.textContent = `Completed ${completionData.score}/${completionData.total}`;
+
       const resetButton = document.createElement('button');
       resetButton.type = 'button';
       resetButton.className = 'reset-progress-btn';
@@ -195,7 +211,11 @@ function renderTestList() {
         saveCompletedTests();
         renderTestList();
       });
-      card.appendChild(resetButton);
+
+      actions.appendChild(reviewButton);
+      actions.appendChild(badge);
+      actions.appendChild(resetButton);
+      card.appendChild(actions);
     }
 
     testList.appendChild(card);
@@ -281,7 +301,7 @@ function renderQuestions(questionsToRender) {
       input.dataset.questionId = question.id;
 
       if (state.reviewMode && savedAnswers !== undefined) {
-        const selectedValues = Array.isArray(savedAnswers) ? savedAnswers : [savedAnswers];
+        const selectedValues = Array.isArray(savedAnswers) ? savedAnswers : savedAnswers ? [savedAnswers] : [];
         input.checked = selectedValues.includes(option);
       }
 
@@ -342,7 +362,8 @@ function getSelectedValues(question) {
 
 function compareAnswers(question, selected) {
   if (question.type === 'multiple') {
-    const sortedSelected = [...selected].sort();
+    const normalizedSelection = Array.isArray(selected) ? selected : [];
+    const sortedSelected = [...normalizedSelection].sort();
     const sortedCorrect = [...(question.correctAnswers || [])].sort();
     return sortedSelected.length === sortedCorrect.length &&
       sortedSelected.every((value, index) => value === sortedCorrect[index]);
