@@ -49,6 +49,92 @@ h1 {
   font-size: clamp(2rem, 3vw, 2.5rem);
 }
 
+.view[hidden] {
+  display: none;
+}
+
+.test-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.test-controls label {
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.test-controls input {
+  width: min(100%, 420px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.random-actions {
+  margin-bottom: 18px;
+}
+
+.test-list {
+  display: grid;
+  gap: 12px;
+}
+
+.test-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.test-card:hover {
+  border-color: var(--primary);
+}
+
+.test-card.completed {
+  border-color: rgba(31, 143, 95, 0.5);
+  background: rgba(31, 143, 95, 0.04);
+}
+
+.test-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.test-card-meta {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.test-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: #eef3ff;
+  color: var(--primary-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.test-badge.completed {
+  background: rgba(31, 143, 95, 0.12);
+  color: var(--success);
+}
+
 .status {
   min-height: 28px;
   margin-bottom: 16px;
@@ -155,11 +241,13 @@ button {
   cursor: pointer;
 }
 
+.primary,
 #submit-btn {
   background: var(--primary);
   color: white;
 }
 
+.primary:hover,
 #submit-btn:hover {
   background: var(--primary-dark);
 }

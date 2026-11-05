@@ -1,0 +1,15 @@
+{
+  "title": "Life in the UK Tests",
+  "tests": [
+    {
+      "id": "test-1",
+      "label": "Test 1",
+      "file": "test-1.json"
+    },
+    {
+      "id": "test-2",
+      "label": "Test 2",
+      "file": "test-2.json"
+    }
+  ]
+}

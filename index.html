@@ -13,14 +13,30 @@
         <h1 id="quiz-title">Loading quiz...</h1>
       </header>
 
-      <div id="status" class="status" aria-live="polite"></div>
+      <section id="home-view" class="view">
+        <div class="test-controls">
+          <label for="test-search">Search tests</label>
+          <input id="test-search" type="search" placeholder="Search by test name" />
+        </div>
 
-      <form id="quiz-form" novalidate></form>
+        <div class="random-actions">
+          <button type="button" id="generate-random-btn" class="primary">Generate random test</button>
+        </div>
 
-      <div class="actions">
-        <button type="submit" form="quiz-form" id="submit-btn">Submit answers</button>
-        <button type="button" id="reset-btn" class="secondary">Reset</button>
-      </div>
+        <div id="test-list" class="test-list" aria-live="polite"></div>
+      </section>
+
+      <section id="quiz-view" class="view" hidden>
+        <div id="status" class="status" aria-live="polite"></div>
+
+        <form id="quiz-form" novalidate></form>
+
+        <div class="actions">
+          <button type="submit" form="quiz-form" id="submit-btn">Submit answers</button>
+          <button type="button" id="reset-btn" class="secondary">Reset</button>
+          <button type="button" id="back-btn" class="secondary">Back to tests</button>
+        </div>
+      </section>
     </main>
 
     <script src="app.js"></script>

@@ -1,39 +1,191 @@
 const form = document.getElementById('quiz-form');
 const titleEl = document.getElementById('quiz-title');
 const statusEl = document.getElementById('status');
-const submitBtn = document.getElementById('submit-btn');
+const homeView = document.getElementById('home-view');
+const quizView = document.getElementById('quiz-view');
+const testList = document.getElementById('test-list');
+const testSearch = document.getElementById('test-search');
 const resetBtn = document.getElementById('reset-btn');
+const backBtn = document.getElementById('back-btn');
+const generateRandomBtn = document.getElementById('generate-random-btn');
 
-let questions = [];
+const storageKey = 'completed-tests';
+
+const state = {
+  title: 'Quiz',
+  tests: [],
+  currentQuestions: [],
+  selectedTestId: null,
+  completedTests: new Set(loadCompletedTests()),
+};
+
+async function fetchJson(url) {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Could not load ${url} (${response.status})`);
+  }
+
+  return response.json();
+}
+
+function loadCompletedTests() {
+  try {
+    const raw = localStorage.getItem(storageKey);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveCompletedTests() {
+  localStorage.setItem(storageKey, JSON.stringify([...state.completedTests]));
+}
+
+function shuffle(items) {
+  const nextItems = [...items];
+
+  for (let index = nextItems.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [nextItems[index], nextItems[swapIndex]] = [nextItems[swapIndex], nextItems[index]];
+  }
+
+  return nextItems;
+}
 
 async function loadQuestions() {
   try {
-    const response = await fetch('data/questions.json');
+    const indexData = await fetchJson('data/tests/index.json');
+    state.title = indexData.title || 'Quiz';
 
-    if (!response.ok) {
-      throw new Error(`Could not load questions (${response.status})`);
+    const testFiles = indexData.tests || [];
+    const loadedTests = [];
+
+    for (const testConfig of testFiles) {
+      const testData = await fetchJson(`data/tests/${testConfig.file}`);
+      loadedTests.push({
+        id: testData.id,
+        label: testData.label || testConfig.label,
+        questions: testData.questions || [],
+      });
     }
 
-    const data = await response.json();
-    questions = data.questions || [];
+    state.tests = loadedTests;
 
-    if (!questions.length) {
-      throw new Error('No questions were found in the JSON file.');
+    if (!state.tests.length) {
+      throw new Error('No tests were found in the JSON index file.');
     }
 
-    titleEl.textContent = data.title || 'Quiz';
-    renderQuestions();
+    const allQuestions = state.tests.flatMap((test) => test.questions || []);
+
+    if (!allQuestions.length) {
+      throw new Error('No questions were found across the test files.');
+    }
+
+    titleEl.textContent = state.title;
+    renderTestList();
+    showHomeScreen();
   } catch (error) {
     titleEl.textContent = 'Quiz unavailable';
     statusEl.textContent = error.message;
     statusEl.className = 'status error';
+    showHomeScreen();
   }
 }
 
-function renderQuestions() {
+function showHomeScreen() {
+  homeView.hidden = false;
+  quizView.hidden = true;
+  titleEl.textContent = state.title;
+}
+
+function showQuizScreen() {
+  homeView.hidden = true;
+  quizView.hidden = false;
+}
+
+function getFixedQuestions(testId) {
+  const test = state.tests.find((item) => item.id === testId);
+  return test ? test.questions : [];
+}
+
+function getRandomQuestions() {
+  const questionsFromTests = state.tests.flatMap((test) => test.questions || []);
+  const uniqueQuestions = questionsFromTests.filter(
+    (question, index, array) => array.findIndex((item) => item.id === question.id) === index
+  );
+
+  return shuffle(uniqueQuestions).slice(0, 24);
+}
+
+function renderTestList() {
+  const searchText = testSearch.value.trim().toLowerCase();
+  const filteredTests = state.tests.filter((test) => {
+    const text = `${test.label} ${test.id}`.toLowerCase();
+    return text.includes(searchText);
+  });
+
+  testList.innerHTML = '';
+
+  if (!filteredTests.length) {
+    testList.innerHTML = '<p class="empty-state">No tests match your search.</p>';
+    return;
+  }
+
+  filteredTests.forEach((test) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'test-card';
+
+    const isCompleted = state.completedTests.has(test.id);
+    if (isCompleted) {
+      button.classList.add('completed');
+    }
+
+    button.innerHTML = `
+      <span class="test-card-main">
+        <strong>${test.label}</strong>
+        <span class="test-card-meta">${test.questions.length} questions</span>
+      </span>
+      <span class="test-badge ${isCompleted ? 'completed' : ''}">${isCompleted ? 'Completed' : 'Open'}</span>
+    `;
+
+    button.addEventListener('click', () => startTest(test.id));
+    testList.appendChild(button);
+  });
+}
+
+function startTest(testId) {
+  state.selectedTestId = testId;
+  state.currentQuestions = getFixedQuestions(testId);
+
+  titleEl.textContent = state.tests.find((test) => test.id === testId)?.label || 'Quiz';
+  renderQuestions(state.currentQuestions);
+  statusEl.textContent = '';
+  statusEl.className = 'status';
+  showQuizScreen();
+}
+
+function startRandomTest() {
+  state.selectedTestId = 'random';
+  state.currentQuestions = getRandomQuestions();
+
+  titleEl.textContent = 'Random 24-question test';
+  renderQuestions(state.currentQuestions);
+  statusEl.textContent = '';
+  statusEl.className = 'status';
+  showQuizScreen();
+}
+
+function renderQuestions(questionsToRender) {
   form.innerHTML = '';
 
-  questions.forEach((question, questionIndex) => {
+  if (!questionsToRender.length) {
+    form.innerHTML = '<p>No questions available for this test.</p>';
+    return;
+  }
+
+  questionsToRender.forEach((question, questionIndex) => {
     const fieldset = document.createElement('fieldset');
     fieldset.className = 'question-card';
 
@@ -95,11 +247,19 @@ function compareAnswers(question, selected) {
   return selected === question.correctAnswer;
 }
 
+function markTestCompleted() {
+  if (state.selectedTestId && state.selectedTestId !== 'random') {
+    state.completedTests.add(state.selectedTestId);
+    saveCompletedTests();
+    renderTestList();
+  }
+}
+
 function renderResults() {
   let correctCount = 0;
 
-  questions.forEach((question) => {
-    const fieldset = form.querySelectorAll('.question-card')[questions.indexOf(question)];
+  state.currentQuestions.forEach((question) => {
+    const fieldset = form.querySelectorAll('.question-card')[state.currentQuestions.indexOf(question)];
     if (!fieldset) return;
 
     const selected = getSelectedValues(question);
@@ -140,15 +300,16 @@ function renderResults() {
     });
   });
 
-  const totalQuestions = questions.length;
+  const totalQuestions = state.currentQuestions.length;
   statusEl.textContent = `You scored ${correctCount} out of ${totalQuestions}.`;
   statusEl.className = 'status success';
+  markTestCompleted();
 }
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const unanswered = questions.filter((question) => {
+  const unanswered = state.currentQuestions.filter((question) => {
     const selected = getSelectedValues(question);
     if (question.type === 'multiple') {
       return Array.isArray(selected) && selected.length === 0;
@@ -178,6 +339,22 @@ resetBtn.addEventListener('click', () => {
       label.classList.remove('correct', 'incorrect');
     });
   });
+
+  if (state.selectedTestId === 'random') {
+    state.currentQuestions = getRandomQuestions();
+    renderQuestions(state.currentQuestions);
+  }
 });
+
+backBtn.addEventListener('click', () => {
+  showHomeScreen();
+  renderTestList();
+});
+
+generateRandomBtn.addEventListener('click', () => {
+  startRandomTest();
+});
+
+testSearch.addEventListener('input', renderTestList);
 
 loadQuestions();

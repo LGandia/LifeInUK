@@ -1,6 +1,10 @@
 # Quiz UI
 
-This is a simple JSON-driven quiz app for single-answer and multiple-choice questions.
+This quiz app supports multiple test modes:
+
+- Fixed numbered tests, e.g. Test 1 and Test 2
+- A random test that generates 24 unique questions
+- Both single-answer and multiple-choice question types
 
 ## Run locally
 
@@ -16,7 +20,7 @@ Then open:
 http://localhost:8000
 ```
 
-## Edit the questions
+## Edit the question data
 
 Update the file:
 
@@ -24,22 +28,36 @@ Update the file:
 data/questions.json
 ```
 
-Example format:
+The JSON structure includes a `tests` section and a `questions` bank.
 
 ```json
 {
-  "title": "My Test",
+  "title": "My Tests",
+  "tests": [
+    {
+      "id": "test-1",
+      "label": "Test 1",
+      "questionIds": ["q-1", "q-2", "q-3"]
+    },
+    {
+      "id": "test-2",
+      "label": "Test 2",
+      "questionIds": ["q-4", "q-5", "q-6"]
+    }
+  ],
   "questions": [
     {
-      "id": "q1",
+      "id": "q-1",
       "type": "single",
+      "pool": "test-1",
       "prompt": "What is 2 + 2?",
       "options": ["3", "4", "5"],
       "correctAnswer": "4"
     },
     {
-      "id": "q2",
+      "id": "q-4",
       "type": "multiple",
+      "pool": "random",
       "prompt": "Select all prime numbers.",
       "options": ["2", "4", "5", "9"],
       "correctAnswers": ["2", "5"]
@@ -48,7 +66,8 @@ Example format:
 }
 ```
 
+Notes:
 - Use `type: "single"` for one-answer questions.
 - Use `type: "multiple"` for multiple-choice questions.
-- For single-answer questions, provide `correctAnswer`.
-- For multiple-answer questions, provide `correctAnswers`.
+- Fixed tests always keep the same questions.
+- The random mode pulls 24 unique questions from the `random` pool.

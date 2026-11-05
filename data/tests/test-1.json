@@ -1,0 +1,30 @@
+{
+  "id": "test-1",
+  "label": "Test 1",
+  "questions": [
+    { "id": "q-1", "type": "single", "prompt": "What is the capital city of England?", "options": ["London", "Manchester", "Birmingham", "Leeds"], "correctAnswer": "London" },
+    { "id": "q-2", "type": "single", "prompt": "Which country is known as the Land of the Rising Sun?", "options": ["Japan", "China", "Korea", "Thailand"], "correctAnswer": "Japan" },
+    { "id": "q-3", "type": "single", "prompt": "How many sides does a hexagon have?", "options": ["5", "6", "7", "8"], "correctAnswer": "6" },
+    { "id": "q-4", "type": "multiple", "prompt": "Select the prime numbers.", "options": ["2", "4", "5", "9", "11"], "correctAnswers": ["2", "5", "11"] },
+    { "id": "q-5", "type": "single", "prompt": "Which planet is known as the Red Planet?", "options": ["Venus", "Mars", "Mercury", "Jupiter"], "correctAnswer": "Mars" },
+    { "id": "q-6", "type": "single", "prompt": "What is 9 x 6?", "options": ["54", "52", "56", "48"], "correctAnswer": "54" },
+    { "id": "q-7", "type": "single", "prompt": "Which ocean is the largest on Earth?", "options": ["Atlantic", "Indian", "Pacific", "Arctic"], "correctAnswer": "Pacific" },
+    { "id": "q-8", "type": "multiple", "prompt": "Select the countries in Europe.", "options": ["France", "Brazil", "Italy", "Egypt", "Spain"], "correctAnswers": ["France", "Italy", "Spain"] },
+    { "id": "q-9", "type": "single", "prompt": "Which gas do plants absorb from the atmosphere?", "options": ["Oxygen", "Carbon dioxide", "Helium", "Hydrogen"], "correctAnswer": "Carbon dioxide" },
+    { "id": "q-10", "type": "single", "prompt": "Who wrote 'Romeo and Juliet'?", "options": ["Charles Dickens", "Jane Austen", "William Shakespeare", "Leo Tolstoy"], "correctAnswer": "William Shakespeare" },
+    { "id": "q-11", "type": "single", "prompt": "How many minutes are in an hour?", "options": ["30", "45", "60", "90"], "correctAnswer": "60" },
+    { "id": "q-12", "type": "single", "prompt": "What is the largest mammal in the world?", "options": ["Elephant", "Blue whale", "Giraffe", "Hippopotamus"], "correctAnswer": "Blue whale" },
+    { "id": "q-13", "type": "multiple", "prompt": "Select the colours in the UK flag.", "options": ["Red", "Blue", "White", "Green", "Black"], "correctAnswers": ["Red", "Blue", "White"] },
+    { "id": "q-14", "type": "single", "prompt": "Which language has the most native speakers worldwide?", "options": ["English", "Spanish", "Mandarin Chinese", "Arabic"], "correctAnswer": "Mandarin Chinese" },
+    { "id": "q-15", "type": "single", "prompt": "Which instrument has 88 keys?", "options": ["Guitar", "Violin", "Piano", "Flute"], "correctAnswer": "Piano" },
+    { "id": "q-16", "type": "single", "prompt": "Which animal is known for being the fastest on land?", "options": ["Horse", "Cheetah", "Lion", "Gazelle"], "correctAnswer": "Cheetah" },
+    { "id": "q-17", "type": "single", "prompt": "Which month comes after June?", "options": ["May", "July", "August", "September"], "correctAnswer": "July" },
+    { "id": "q-18", "type": "multiple", "prompt": "Select the continents of the world.", "options": ["Africa", "Europe", "Asia", "Atlantis", "Antarctica"], "correctAnswers": ["Africa", "Europe", "Asia", "Antarctica"] },
+    { "id": "q-19", "type": "single", "prompt": "Which city is home to the Eiffel Tower?", "options": ["Rome", "Paris", "Madrid", "Berlin"], "correctAnswer": "Paris" },
+    { "id": "q-20", "type": "single", "prompt": "What is the freezing point of water in Celsius?", "options": ["0", "10", "32", "100"], "correctAnswer": "0" },
+    { "id": "q-21", "type": "single", "prompt": "Which organ pumps blood around the body?", "options": ["Lungs", "Liver", "Brain", "Heart"], "correctAnswer": "Heart" },
+    { "id": "q-22", "type": "single", "prompt": "What is the capital of Scotland?", "options": ["London", "Glasgow", "Edinburgh", "Aberdeen"], "correctAnswer": "Edinburgh" },
+    { "id": "q-23", "type": "multiple", "prompt": "Select the natural numbers below 10.", "options": ["0", "1", "2", "5", "9", "10"], "correctAnswers": ["1", "2", "5", "9"] },
+    { "id": "q-24", "type": "single", "prompt": "Which element has the chemical symbol O?", "options": ["Gold", "Oxygen", "Osmium", "Silver"], "correctAnswer": "Oxygen" }
+  ]
+}
