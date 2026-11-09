@@ -139,31 +139,31 @@
     },
     { 
         "id": "q-20", 
+        "type": "single", 
+        "prompt": "The first day of one notorious Battle in 1916 resulted in 60,000 British casualties. What was this Battle?", 
+        "options": ["The Battle of the Somme", "The Battle of the Bulge", "The Battle of Agincourt", "The Battle of River Plate"], 
+        "correctAnswer": "The Battle of the Somme" 
+    },
+    { 
+        "id": "q-21", 
         "type": "multiple", 
         "prompt": "Which two of the following are British overseas territories?", 
         "options": ["Jamaica", "St Helena", "Australia", "The Falkland Islands"], 
         "correctAnswer": ["St Helena","The Falkland Islands"] 
     },
     {
-        "id": "q-21", 
+        "id": "q-22", 
         "type": "single", 
         "prompt": "Is the statement below TRUE or FALSE? Population growth in the UK has been faster in recent years, thanks in part to migration and longer life expectancy.", 
         "options": ["True", "False"], 
         "correctAnswer": "True" 
     },
     {
-        "id": "q-22", 
+        "id": "q-23", 
         "type": "single", 
         "prompt": "How old do you have to be to buy alcohol in the UK?", 
         "options": ["16", "18", "20", "21"], 
         "correctAnswer": "18" 
-    },
-    {
-        "id": "q-23", 
-        "type": "single", 
-        "prompt": "Which of the following statements is correct?", 
-        "options": ["The UK is a member of the European Union", "The UK is not a member of the European Union"], 
-        "correctAnswer": "The UK is not a member of the European Union" 
     },
     {
         "id": "q-24", 
