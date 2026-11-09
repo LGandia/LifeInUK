@@ -133,7 +133,7 @@
     { 
         "id": "q-19", 
         "type": "single", 
-        "prompt": "Who chair debates in the House of Commons?", 
+        "prompt": "Who chairs debates in the House of Commons?", 
         "options": ["The Leader of the Opposition", "The Prime Minister", "The Speaker", "The Foreign Secretary"], 
         "correctAnswer": "The Speaker" 
     },
@@ -141,7 +141,7 @@
         "id": "q-20", 
         "type": "multiple", 
         "prompt": "Which two of the following are British overseas territories?", 
-        "options": ["Jamaica", "St Helena", "Austrialia", "The Falkan Islands"], 
+        "options": ["Jamaica", "St Helena", "Australia", "The Falkland Islands"], 
         "correctAnswer": ["St Helena","The Falkland Islands"] 
     },
     {
