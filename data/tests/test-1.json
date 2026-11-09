@@ -56,9 +56,9 @@
     { 
        "id": "q-8",
        "type": "single",
-       "prompt": "Which ocean is the largest on Earth?",
-       "options": ["Atlantic", "Indian", "Pacific", "Arctic"],
-       "correctAnswer": "Pacific"
+       "prompt": "Which of the following statements is correct?",
+       "options": ["Refuges and shelters offer a safe place to stay for victims of domestic violence", "The Citizens Advice Bureau offers a safe place to stay for victims of domestic violence"],
+       "correctAnswer": "Refuges and shelters offer a safe place to stay for victims of domestic violence"
     },
     { 
         "id": "q-9", 
