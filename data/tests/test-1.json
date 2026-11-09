@@ -2,29 +2,175 @@
   "id": "test-1",
   "label": "Test 1",
   "questions": [
-    { "id": "q-1", "type": "single", "prompt": "What is the capital city of England?", "options": ["London", "Manchester", "Birmingham", "Leeds"], "correctAnswer": "London" },
-    { "id": "q-2", "type": "single", "prompt": "Which country is known as the Land of the Rising Sun?", "options": ["Japan", "China", "Korea", "Thailand"], "correctAnswer": "Japan" },
-    { "id": "q-3", "type": "single", "prompt": "How many sides does a hexagon have?", "options": ["5", "6", "7", "8"], "correctAnswer": "6" },
-    { "id": "q-4", "type": "multiple", "prompt": "Select the prime numbers.", "options": ["2", "4", "5", "9", "11"], "correctAnswers": ["2", "5", "11"] },
-    { "id": "q-5", "type": "single", "prompt": "Which planet is known as the Red Planet?", "options": ["Venus", "Mars", "Mercury", "Jupiter"], "correctAnswer": "Mars" },
-    { "id": "q-6", "type": "single", "prompt": "What is 9 x 6?", "options": ["54", "52", "56", "48"], "correctAnswer": "54" },
-    { "id": "q-7", "type": "single", "prompt": "Which ocean is the largest on Earth?", "options": ["Atlantic", "Indian", "Pacific", "Arctic"], "correctAnswer": "Pacific" },
-    { "id": "q-8", "type": "multiple", "prompt": "Select the countries in Europe.", "options": ["France", "Brazil", "Italy", "Egypt", "Spain"], "correctAnswers": ["France", "Italy", "Spain"] },
-    { "id": "q-9", "type": "single", "prompt": "Which gas do plants absorb from the atmosphere?", "options": ["Oxygen", "Carbon dioxide", "Helium", "Hydrogen"], "correctAnswer": "Carbon dioxide" },
-    { "id": "q-10", "type": "single", "prompt": "Who wrote 'Romeo and Juliet'?", "options": ["Charles Dickens", "Jane Austen", "William Shakespeare", "Leo Tolstoy"], "correctAnswer": "William Shakespeare" },
-    { "id": "q-11", "type": "single", "prompt": "How many minutes are in an hour?", "options": ["30", "45", "60", "90"], "correctAnswer": "60" },
-    { "id": "q-12", "type": "single", "prompt": "What is the largest mammal in the world?", "options": ["Elephant", "Blue whale", "Giraffe", "Hippopotamus"], "correctAnswer": "Blue whale" },
-    { "id": "q-13", "type": "multiple", "prompt": "Select the colours in the UK flag.", "options": ["Red", "Blue", "White", "Green", "Black"], "correctAnswers": ["Red", "Blue", "White"] },
-    { "id": "q-14", "type": "single", "prompt": "Which language has the most native speakers worldwide?", "options": ["English", "Spanish", "Mandarin Chinese", "Arabic"], "correctAnswer": "Mandarin Chinese" },
-    { "id": "q-15", "type": "single", "prompt": "Which instrument has 88 keys?", "options": ["Guitar", "Violin", "Piano", "Flute"], "correctAnswer": "Piano" },
-    { "id": "q-16", "type": "single", "prompt": "Which animal is known for being the fastest on land?", "options": ["Horse", "Cheetah", "Lion", "Gazelle"], "correctAnswer": "Cheetah" },
-    { "id": "q-17", "type": "single", "prompt": "Which month comes after June?", "options": ["May", "July", "August", "September"], "correctAnswer": "July" },
-    { "id": "q-18", "type": "multiple", "prompt": "Select the continents of the world.", "options": ["Africa", "Europe", "Asia", "Atlantis", "Antarctica"], "correctAnswers": ["Africa", "Europe", "Asia", "Antarctica"] },
-    { "id": "q-19", "type": "single", "prompt": "Which city is home to the Eiffel Tower?", "options": ["Rome", "Paris", "Madrid", "Berlin"], "correctAnswer": "Paris" },
-    { "id": "q-20", "type": "single", "prompt": "What is the freezing point of water in Celsius?", "options": ["0", "10", "32", "100"], "correctAnswer": "0" },
-    { "id": "q-21", "type": "single", "prompt": "Which organ pumps blood around the body?", "options": ["Lungs", "Liver", "Brain", "Heart"], "correctAnswer": "Heart" },
-    { "id": "q-22", "type": "single", "prompt": "What is the capital of Scotland?", "options": ["London", "Glasgow", "Edinburgh", "Aberdeen"], "correctAnswer": "Edinburgh" },
-    { "id": "q-23", "type": "multiple", "prompt": "Select the natural numbers below 10.", "options": ["0", "1", "2", "5", "9", "10"], "correctAnswers": ["1", "2", "5", "9"] },
-    { "id": "q-24", "type": "single", "prompt": "Which element has the chemical symbol O?", "options": ["Gold", "Oxygen", "Osmium", "Silver"], "correctAnswer": "Oxygen" }
-  ]
+    { 
+        "id": "q-1", 
+        "type": "single", 
+        "prompt": "Which of the following statements is correct?", 
+        "options": ["Many civilian volunteers helped the British Navy to rescue more than 30,000 men from the beaches around Dunkirk", 
+                    "300,000 men were rescued from the beaches around Dunkirk solely by the British Navy"], 
+        "correctAnswer": "Many civilian volunteers helped the British Navy to rescue more than 30,000 men from the beaches around Dunkirk"
+    },
+    { 
+        "id": "q-2", 
+        "type": "single", 
+        "prompt": "Which king, who succeeded Henry VIII, died when he was 15 years old?", 
+        "options": ["Edward VI", "Charles", "Harold", "Richard III"], 
+        "correctAnswer": "Edward VI" 
+    },
+    { 
+        "id": "q-3", 
+        "type": "single", 
+        "prompt": "Is the statement below TRUE or FALSE? Charles II marched into England with a Scottish army to reclaim his throne", 
+        "options": ["True", "False"], 
+        "correctAnswer": "True" 
+    },
+    { 
+        "id": "q-4", 
+        "type": "single", 
+        "prompt": "Which of the following statements is correct?", 
+        "options": ["A bank holiday in the UK refers to banks beinng closed on that day", 
+                    "A bank holiday in the UK happens each calendar month"], 
+        "correctAnswer": "A bank holiday in the UK refers to banks beinng closed on that day"
+    },
+    { 
+        "id": "q-5", 
+        "type": "multiple", 
+        "prompt": "Which TWO of the following are famouse British landmarks?", 
+        "options": ["The London Eye", "Mont Blanc", "The Eden Project", "The Smithsonian"], 
+        "correctAnswer": ["The London Eye", "The Eden Project"] 
+    },
+    { 
+        "id": "q-6", 
+        "type": "single", 
+        "prompt": "Which country of the UK is not represented on the Union Flag?", 
+        "options": ["Scotland", "Wales", "Northern Ireland", "England"], 
+        "correctAnswer": "Wales" 
+    },
+        { 
+        "id": "q-7", 
+        "type": "single", 
+        "prompt": "Which of these people was a great British playwright?", 
+        "options": ["Sir Francis Drake", "Geoffrey Chaucer", "William Caxton", "William Shakespeare"], 
+        "correctAnswer": "William Shakespeare" 
+    },
+    { 
+       "id": "q-8",
+       "type": "single",
+       "prompt": "Which ocean is the largest on Earth?",
+       "options": ["Atlantic", "Indian", "Pacific", "Arctic"],
+       "correctAnswer": "Pacific"
+    },
+    { 
+        "id": "q-9", 
+        "type": "single", 
+        "prompt": "When were the first professional football clubs formed?", 
+        "options": ["The Middle Ages", "17th Century", "19th Century", "20th Century"], 
+        "correctAnswer": "19th Century" 
+    },
+    { 
+        "id": "q-10", 
+        "type": "single", 
+        "prompt": "Which of the following is a famous composer who wrote operas such as Peter Grimes and Billy Budd?", 
+        "options": ["Dame Zaha Hadid", "Gustav Holst", "Benjamin Britten", "Henry Purcell"], 
+        "correctAnswer": "Benjamin Britten" 
+    },
+    { 
+        "id": "q-11", 
+        "type": "single", 
+        "prompt": "Which of the following statements is correct?", 
+        "options": ["The UK was once one of the founding members of the European Economic Community", "The UK only joined the European Economic Community in 1973"], 
+        "correctAnswer": "The UK only joined the European Economic Community in 1973" 
+    },
+    { 
+        "id": "q-12", 
+        "type": "single", 
+        "prompt": "Is the following statement TRUE or FALSE? Volunteering and helping your community are important parts of being a good citizen.", 
+        "options": ["True", "False"], 
+        "correctAnswer": "True" 
+    },
+    { 
+        "id": "q-13", 
+        "type": "single", 
+        "prompt": "How are local authorities funded?", 
+        "options": ["By funding from central government only", "By local taxes", "By central government and by local taxes", "Local authorities are unfunded"], 
+        "correctAnswer": "By central government and by local taxes" 
+    },
+    { 
+        "id": "q-14", 
+        "type": "single", 
+        "prompt": "Is the statement below TRUE or FALSE? Discrimination in the workplace is covered by criminal law.", 
+        "options": ["True", "False"], 
+        "correctAnswer": "False" 
+    },
+    { 
+        "id": "q-15", 
+        "type": "single", 
+        "prompt": "Which of the following statements is correct?", 
+        "options": ["Everyone pays National Insurance contributions", "Most working people pay National Insurance contributions"], 
+        "correctAnswer": "Most working people pay National Insurance contributions" 
+    },
+    { 
+        "id": "q-16", 
+        "type": "single", 
+        "prompt": "Whom did William the Conqueror defeat at the Battle of Hastings in 1066?", 
+        "options": ["King Cnut", "Boudicca", "Kenneth MacAlpin", "King Harold"], 
+        "correctAnswer": "King Harold" 
+    },
+    { 
+        "id": "q-17", 
+        "type": "single", 
+        "prompt": "Which British novelist created the fictional detective Sherlock Holmes?", 
+        "options": ["Sir Arthur Conan Doyle", "Evelyn Waugh", "Robert Louis Stevenson", "Graham Greene"], 
+        "correctAnswer": "Sir Arthur Conan Doyle" 
+    },
+    { 
+        "id": "q-18", 
+        "type": "multiple", 
+        "prompt": "The judiciary is responsible for which TWO of the following?", 
+        "options": ["Interpreting the law", "Keeping order during political debates", "Nominating peers", "Making sure that trials are fair"], 
+        "correctAnswer": ["Interpreting the law", "Making sure that trials are fair"] 
+    },
+    { 
+        "id": "q-19", 
+        "type": "single", 
+        "prompt": "Who chair debates in the House of Commons?", 
+        "options": ["The Leader of the Opposition", "The Prime Minister", "The Speaker", "The Foreign Secretary"], 
+        "correctAnswer": "The Speaker" 
+    },
+    { 
+        "id": "q-20", 
+        "type": "multiple", 
+        "prompt": "Which two of the following are British overseas territories?", 
+        "options": ["Jamaica", "St Helena", "Austrialia", "The Falkan Islands"], 
+        "correctAnswer": ["St Helena","The Falkland Islands"] 
+    },
+    {
+        "id": "q-21", 
+        "type": "single", 
+        "prompt": "Is the statement below TRUE or FALSE? Population growth in the UK has been faster in recent years, thanks in part to migration and longer life expectancy.", 
+        "options": ["True", "False"], 
+        "correctAnswer": "True" 
+    },
+    {
+        "id": "q-22", 
+        "type": "single", 
+        "prompt": "How old do you have to be to buy alcohol in the UK?", 
+        "options": ["16", "18", "20", "21"], 
+        "correctAnswer": "18" 
+    },
+    {
+        "id": "q-23", 
+        "type": "single", 
+        "prompt": "Which of the following statements is correct?", 
+        "options": ["The UK is a member of the European Union", "The UK is not a member of the European Union"], 
+        "correctAnswer": "The UK is not a member of the European Union" 
+    },
+    {
+        "id": "q-24", 
+        "type": "single", 
+        "prompt": "Who is the patron saint of Scotland?", 
+        "options": ["St. David", "St. George", "St. Patrick", "St. Andrew"], 
+        "correctAnswer": "St. Andrew" 
+    }
+    ]
 }
