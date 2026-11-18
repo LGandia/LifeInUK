@@ -7,6 +7,7 @@ const testList = document.getElementById('test-list');
 const testSearch = document.getElementById('test-search');
 const backBtn = document.getElementById('back-btn');
 const generateRandomBtn = document.getElementById('generate-random-btn');
+const submitBtn = document.getElementById('submit-btn');
 
 const storageKey = 'completed-tests';
 
@@ -51,8 +52,18 @@ function loadCompletedTests() {
         const total = typeof value === 'object' && value !== null && Number.isFinite(Number(value.total))
           ? Number(value.total)
           : 24;
+        const completion = { score, total };
 
-        return [testId, { score, total }];
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          if (value.answers && typeof value.answers === 'object' && !Array.isArray(value.answers)) {
+            completion.answers = value.answers;
+          }
+          if (Array.isArray(value.failedQuestionIds)) {
+            completion.failedQuestionIds = value.failedQuestionIds;
+          }
+        }
+
+        return [testId, completion];
       })
     );
   } catch {
@@ -232,6 +243,7 @@ function startTest(testId, options = {}) {
     const completedData = state.completedTests.get(testId);
     const answers = completedData && completedData.answers ? completedData.answers : {};
     const failedQuestions = state.currentQuestions.filter((question) => {
+      if (!Object.hasOwn(answers, question.id)) return true;
       const selected = answers[question.id];
       return !compareAnswers(question, selected || (question.type === 'multiple' ? [] : null));
     });
@@ -247,6 +259,7 @@ function startTest(testId, options = {}) {
 
 function startRandomTest() {
   state.hasAttemptedSubmit = false;
+  state.reviewMode = false;
   state.selectedTestId = 'random';
   state.currentQuestions = getRandomQuestions();
 
@@ -259,6 +272,7 @@ function startRandomTest() {
 
 function renderQuestions(questionsToRender) {
   form.innerHTML = '';
+  submitBtn.hidden = state.reviewMode;
 
   if (!questionsToRender.length) {
     form.innerHTML = '<p>No questions available for this test.</p>';
@@ -268,6 +282,7 @@ function renderQuestions(questionsToRender) {
   questionsToRender.forEach((question, questionIndex) => {
     const fieldset = document.createElement('fieldset');
     fieldset.className = 'question-card';
+    fieldset.disabled = state.reviewMode;
 
     const header = document.createElement('div');
     header.className = 'question-header';
@@ -299,6 +314,7 @@ function renderQuestions(questionsToRender) {
       input.name = `question-${question.id}`;
       input.value = option;
       input.dataset.questionId = question.id;
+      input.disabled = state.reviewMode;
 
       if (state.reviewMode && savedAnswers !== undefined) {
         const selectedValues = Array.isArray(savedAnswers) ? savedAnswers : savedAnswers ? [savedAnswers] : [];
@@ -324,27 +340,33 @@ function renderQuestions(questionsToRender) {
       const fieldset = form.querySelectorAll('.question-card')[state.currentQuestions.indexOf(question)];
       if (!fieldset) return;
 
+      const hasSavedAnswer = Object.hasOwn(answers, question.id);
       const selected = answers[question.id];
-      const isCorrect = compareAnswers(question, selected);
+      const selectedValues = Array.isArray(selected)
+        ? selected
+        : typeof selected === 'string' ? [selected] : [];
+      const isCorrect = hasSavedAnswer && compareAnswers(question, selected);
       fieldset.classList.toggle('correct', isCorrect);
-      fieldset.classList.toggle('incorrect', !isCorrect);
+      fieldset.classList.toggle('incorrect', hasSavedAnswer && !isCorrect);
 
       const feedback = document.createElement('div');
-      feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-      feedback.textContent = isCorrect
-        ? 'Correct answer.'
-        : `Incorrect. ${question.type === 'multiple' ? 'Correct answers: ' : 'Correct answer: '} ${question.type === 'multiple' ? (question.correctAnswers || []).join(', ') : question.correctAnswer}`;
+      feedback.className = `feedback ${hasSavedAnswer ? (isCorrect ? 'correct' : 'incorrect') : ''}`;
+      const correctAnswerText = question.type === 'multiple'
+        ? getCorrectAnswers(question).join(', ')
+        : question.correctAnswer;
+      const answerLabel = question.type === 'multiple' ? 'answers' : 'answer';
+      feedback.textContent = `${hasSavedAnswer ? (isCorrect ? 'Your answer is correct.' : 'Your answer is incorrect.') : 'Your answer was not saved.'} Correct ${answerLabel}: ${correctAnswerText}`;
       fieldset.appendChild(feedback);
 
       fieldset.querySelectorAll('.option').forEach((optionLabel) => {
         const input = optionLabel.querySelector('input');
         const optionValue = input.value;
         const isOptionCorrect = question.type === 'multiple'
-          ? (question.correctAnswers || []).includes(optionValue)
+          ? getCorrectAnswers(question).includes(optionValue)
           : optionValue === question.correctAnswer;
-        const isSelected = question.type === 'multiple'
-          ? (selected || []).includes(optionValue)
-          : selected === optionValue;
+        const isSelected = hasSavedAnswer && (question.type === 'multiple'
+          ? selectedValues.includes(optionValue)
+          : selected === optionValue);
 
         optionLabel.classList.toggle('correct', isOptionCorrect);
         optionLabel.classList.toggle('incorrect', isSelected && !isOptionCorrect);
@@ -360,11 +382,29 @@ function getSelectedValues(question) {
   return question.type === 'multiple' ? selected : selected[0] || null;
 }
 
+function getCorrectAnswers(question) {
+  if (Array.isArray(question.correctAnswers) && question.correctAnswers.length) {
+    return question.correctAnswers;
+  }
+
+  if (Array.isArray(question.correctAnswer) && question.correctAnswer.length) {
+    return question.correctAnswer;
+  }
+
+  if (question.type === 'multiple' && typeof question.correctAnswer === 'string' && question.correctAnswer) {
+    return [question.correctAnswer];
+  }
+
+  return Array.isArray(question.correctAnswers) ? question.correctAnswers : [];
+}
+
 function compareAnswers(question, selected) {
   if (question.type === 'multiple') {
-    const normalizedSelection = Array.isArray(selected) ? selected : [];
+    const normalizedSelection = Array.isArray(selected)
+      ? selected
+      : typeof selected === 'string' ? [selected] : [];
     const sortedSelected = [...normalizedSelection].sort();
-    const sortedCorrect = [...(question.correctAnswers || [])].sort();
+    const sortedCorrect = [...getCorrectAnswers(question)].sort();
     return sortedSelected.length === sortedCorrect.length &&
       sortedSelected.every((value, index) => value === sortedCorrect[index]);
   }
@@ -431,9 +471,12 @@ function renderResults() {
 
     const feedback = document.createElement('div');
     feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-    feedback.textContent = isCorrect
-      ? 'Correct answer.'
-      : `Incorrect. ${question.type === 'multiple' ? 'Correct answers: ' : 'Correct answer: '} ${question.type === 'multiple' ? (question.correctAnswers || []).join(', ') : question.correctAnswer}`;
+    const correctAnswerText = question.type === 'multiple'
+      ? getCorrectAnswers(question).join(', ')
+      : question.correctAnswer;
+    feedback.textContent = question.type === 'multiple'
+      ? `${isCorrect ? 'Correct.' : 'Incorrect.'} Correct answers: ${correctAnswerText}`
+      : isCorrect ? 'Correct answer.' : `Incorrect. Correct answer: ${correctAnswerText}`;
 
     fieldset.appendChild(feedback);
 
@@ -441,7 +484,7 @@ function renderResults() {
       const input = optionLabel.querySelector('input');
       const optionValue = input.value;
       const isOptionCorrect = question.type === 'multiple'
-        ? (question.correctAnswers || []).includes(optionValue)
+        ? getCorrectAnswers(question).includes(optionValue)
         : optionValue === question.correctAnswer;
       const isSelected = question.type === 'multiple'
         ? (selected || []).includes(optionValue)
@@ -478,11 +521,15 @@ function updateUnansweredState() {
 state.hasAttemptedSubmit = false;
 
 form.addEventListener('input', () => {
+  if (state.reviewMode) return;
+
   if (state.hasAttemptedSubmit) {
     updateUnansweredState();
   }
 });
 form.addEventListener('change', () => {
+  if (state.reviewMode) return;
+
   if (state.hasAttemptedSubmit) {
     updateUnansweredState();
   }
@@ -490,6 +537,8 @@ form.addEventListener('change', () => {
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  if (state.reviewMode) return;
+
   state.hasAttemptedSubmit = true;
 
   const unanswered = state.currentQuestions.filter((question) => {
